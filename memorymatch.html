@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Match Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            grid-template-rows: repeat(4, 100px);
+            gap: 10px;
+            margin: 20px;
+        }
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+            border-radius: 10px;
+            user-select: none;
+        }
+        .flipped, .matched {
+            background-color: #2ecc71;
+        }
+        .matched {
+            color: #fff;
+            cursor: default;
+        }
+        .message {
+            margin: 10px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h2>Memory Match Game</h2>
+    <p>Find all the matching pairs!</p>
+    <div class="game-container" id="gameContainer"></div>
+    <p class="message" id="message"></p>
+
+    <script>
+        const symbols = ["🍎", "🍌", "🍒", "🍇", "🍉", "🍋", "🍓", "🍑"];
+        const cards = [...symbols, ...symbols]; // Create pairs of symbols
+        let firstCard = null;
+        let secondCard = null;
+        let matchesFound = 0;
+
+        // Shuffle cards
+        cards.sort(() => 0.5 - Math.random());
+
+        // Create the card elements
+        const gameContainer = document.getElementById("gameContainer");
+        cards.forEach(symbol => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            card.dataset.symbol = symbol;
+            card.addEventListener("click", handleCardClick);
+            gameContainer.appendChild(card);
+        });
+
+        function handleCardClick(event) {
+            const clickedCard = event.target;
+
+            // Ignore clicks on already matched or flipped cards
+            if (clickedCard.classList.contains("flipped") || clickedCard.classList.contains("matched")) return;
+
+            clickedCard.textContent = clickedCard.dataset.symbol;
+            clickedCard.classList.add("flipped");
+
+            // Set first and second card
+            if (!firstCard) {
+                firstCard = clickedCard;
+            } else if (!secondCard) {
+                secondCard = clickedCard;
+
+                // Check for a match
+                if (firstCard.dataset.symbol === secondCard.dataset.symbol) {
+                    firstCard.classList.add("matched");
+                    secondCard.classList.add("matched");
+                    matchesFound += 1;
+                    resetCards();
+
+                    // Check if all pairs are found
+                    if (matchesFound === symbols.length) {
+                        document.getElementById("message").textContent = "Congratulations! You've found all pairs!";
+                    }
+                } else {
+                    // No match, flip cards back after a short delay
+                    setTimeout(() => {
+                        firstCard.textContent = "";
+                        secondCard.textContent = "";
+                        firstCard.classList.remove("flipped");
+                        secondCard.classList.remove("flipped");
+                        resetCards();
+                    }, 1000);
+                }
+            }
+        }
+
+        function resetCards() {
+            firstCard = null;
+            secondCard = null;
+        }
+    </script>
+</body>
+</html>
