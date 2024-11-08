@@ -79,4 +79,33 @@
 
             // Provide feedback based on distance
             if (distance === 0) {
-                event.target.classList.add("
+                event.target.classList.add("hot");
+                document.getElementById("message").textContent = "Congratulations! You found the hidden location!";
+                revealTarget();
+            } else if (distance < 2) {
+                event.target.classList.add("hot");
+                document.getElementById("message").textContent = "Very hot! You're really close!";
+            } else if (distance < 5) {
+                event.target.classList.add("hot");
+                document.getElementById("message").textContent = "Hot! You're getting closer!";
+            } else if (distance < 8) {
+                event.target.classList.add("cold");
+                document.getElementById("message").textContent = "Cold. Try another spot!";
+            } else {
+                event.target.classList.add("cold");
+                document.getElementById("message").textContent = "Very cold. You're far away!";
+            }
+        }
+
+        function revealTarget() {
+            // Highlight the target cell
+            document.querySelectorAll(".cell").forEach(cell => {
+                if (parseInt(cell.dataset.row) === targetRow && parseInt(cell.dataset.col) === targetCol) {
+                    cell.classList.add("hot");
+                }
+                cell.removeEventListener("click", handleCellClick);
+            });
+        }
+    </script>
+</body>
+</html>
