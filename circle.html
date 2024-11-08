@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch the Circle</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .game-container {
+            position: relative;
+            width: 80vw;
+            height: 60vh;
+            border: 2px solid #333;
+            background-color: #eaeaea;
+            overflow: hidden;
+        }
+        .circle {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #3498db;
+            cursor: pointer;
+        }
+        .score, .timer {
+            font-size: 1.5em;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Catch the Circle</h2>
+    <p>Click the circle as many times as you can before the time runs out!</p>
+    <div class="game-container" id="gameContainer">
+        <div class="circle" id="circle"></div>
+    </div>
+    <p class="score" id="score">Score: 0</p>
+    <p class="timer" id="timer">Time Left: 30s</p>
+
+    <script>
+        const circle = document.getElementById("circle");
+        const gameContainer = document.getElementById("gameContainer");
+        const scoreDisplay = document.getElementById("score");
+        const timerDisplay = document.getElementById("timer");
+
+        let score = 0;
+        let timeLeft = 30; // Game duration in seconds
+        let gameInterval;
+
+        // Function to move the circle to a random position
+        function moveCircle() {
+            const containerWidth = gameContainer.clientWidth;
+            const containerHeight = gameContainer.clientHeight;
+            const circleSize = 50; // Circle diameter
+
+            const randomX = Math.floor(Math.random() * (containerWidth - circleSize));
+            const randomY = Math.floor(Math.random() * (containerHeight - circleSize));
+
+            circle.style.left = `${randomX}px`;
+            circle.style.top = `${randomY}px`;
+        }
+
+        // Function to start the game timer
+        function startGame() {
+            gameInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = `Time Left: ${timeLeft}s`;
+
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+
+            moveCircle(); // Initial move
+        }
+
+        // Function to handle circle click
+        function handleCircleClick() {
+            score++;
+            scoreDisplay.textContent = `Score: ${score}`;
+            moveCircle();
+        }
+
+        // Function to end the game
+        function endGame() {
+            clearInterval(gameInterval);
+            circle.removeEventListener("click", handleCircleClick);
+            timerDisplay.textContent = `Game Over! Final Score: ${score}`;
+        }
+
+        // Start the game when the circle is clicked the first time
+        circle.addEventListener("click", () => {
+            if (score === 0 && timeLeft === 30) startGame(); // Start timer on first click
+            handleCircleClick();
+        });
+    </script>
+</body>
+</html>
