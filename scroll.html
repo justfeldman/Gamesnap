@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameSnap - Game Carousel</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        img.logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2em;
+            color: #333;
+            margin: 10px 0;
+        }
+        .carousel-container {
+            width: 100%;
+            max-width: 800px;
+            overflow-x: scroll;
+            scroll-snap-type: x mandatory;
+            display: flex;
+            gap: 20px;
+            padding: 10px 0;
+        }
+        .carousel-container::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for cleaner look */
+        }
+        .game-card {
+            min-width: 200px;
+            max-width: 200px;
+            height: 250px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            scroll-snap-align: start;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .game-card:hover {
+            transform: scale(1.05);
+        }
+        .game-card h3 {
+            margin: 15px 0 10px;
+            font-size: 1.2em;
+        }
+        .game-card a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-top: 10px;
+            background-color: #2980b9;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .game-card a:hover {
+            background-color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo Image -->
+    <img src="Gamesnaplogo.png" alt="GameSnap Logo" class="logo">
+    <h1>Choose Your Game</h1>
+
+    <!-- Horizontal Carousel Container -->
+    <div class="carousel-container">
+        <!-- Game Cards -->
+        <div class="game-card" onclick="location.href='circle.html'">
+            <h3>Catch the Circle</h3>
+            <p>Click the circle as fast as you can!</p>
+            <a href="circle.html">Play</a>
+        </div>
+        <div class="game-card" onclick="location.href='distance.html'">
+            <h3>Distance Guessing</h3>
+            <p>Guess how far you are from the target location!</p>
+            <a href="distance.html">Play</a>
+        </div>
+        <div class="game-card" onclick="location.href='hotcold.html'">
+            <h3>Hot or Cold</h3>
+            <p>Are you hot or cold? Find the hidden location!</p>
+            <a href="hotcold.html">Play</a>
+        </div>
+        <div class="game-card" onclick="location.href='memorymatch.html'">
+            <h3>Memory Match</h3>
+            <p>Test your memory with this matching game!</p>
+            <a href="memorymatch.html">Play</a>
+        </div>
+        <div class="game-card" onclick="location.href='snappygolf.html'">
+            <h3>Snappy Golf</h3>
+            <p>Flap the ball to reach the goal!</p>
+            <a href="snappygolf.html">Play</a>
+        </div>
+    </div>
+</body>
+</html>
