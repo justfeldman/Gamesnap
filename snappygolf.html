@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Golf</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #87CEEB;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            border: 2px solid #333;
+            background-color: #87CEEB;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Game Variables
+        let ballX = 50;
+        let ballY = 300;
+        let ballRadius = 15;
+        let gravity = 0.5;
+        let lift = -10;
+        let velocity = 0;
+        let score = 0;
+        let isGameOver = false;
+
+        // Obstacle Variables
+        const obstacleWidth = 50;
+        const obstacleGap = 150;
+        const obstacles = [];
+        let obstacleFrequency = 90;
+        let frameCount = 0;
+
+        // Ball Color
+        const ballColor = "#FFD700"; // Gold color
+
+        // Event listener for space bar
+        document.addEventListener("keydown", function(event) {
+            if (event.code === "Space") {
+                velocity = lift;
+            }
+        });
+
+        // Game Loop
+        function gameLoop() {
+            if (!isGameOver) {
+                update();
+                draw();
+                requestAnimationFrame(gameLoop);
+            } else {
+                showGameOver();
+            }
+        }
+
+        function update() {
+            // Apply gravity
+            velocity += gravity;
+            ballY += velocity;
+
+            // Add new obstacles
+            frameCount++;
+            if (frameCount % obstacleFrequency === 0) {
+                createObstacle();
+            }
+
+            // Move and check obstacles
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                obstacles[i].x -= 2;
+
+                // Remove obstacles that are off screen
+                if (obstacles[i].x + obstacleWidth < 0) {
+                    obstacles.splice(i, 1);
+                    score++;
+                }
+
+                // Check for collisions
+                if (
+                    ballX + ballRadius > obstacles[i].x &&
+                    ballX - ballRadius < obstacles[i].x + obstacleWidth &&
+                    (ballY - ballRadius < obstacles[i].topHeight ||
+                     ballY + ballRadius > canvas.height - obstacles[i].bottomHeight)
+                ) {
+                    isGameOver = true;
+                }
+            }
+
+            // Check if ball hits the top or bottom
+            if (ballY + ballRadius > canvas.height || ballY - ballRadius < 0) {
+                isGameOver = true;
+            }
+        }
+
+        function createObstacle() {
+            const topHeight = Math.floor(Math.random() * (canvas.height - obstacleGap));
+            const bottomHeight = canvas.height - obstacleGap - topHeight;
+            obstacles.push({ x: canvas.width, topHeight: topHeight, bottomHeight: bottomHeight });
+        }
+
+        function draw() {
+            // Clear Canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Ball
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = ballColor;
+            ctx.fill();
+            ctx.closePath();
+
+            // Draw Obstacles
+            obstacles.forEach(obstacle => {
+                ctx.fillStyle = "#228B22"; // Green color for obstacles
+                // Top obstacle
+                ctx.fillRect(obstacle.x, 0, obstacleWidth, obstacle.topHeight);
+                // Bottom obstacle
+                ctx.fillRect(obstacle.x, canvas.height - obstacle.bottomHeight, obstacleWidth, obstacle.bottomHeight);
+            });
+
+            // Draw Score
+            ctx.fillStyle = "#333";
+            ctx.font = "20px Arial";
+            ctx.fillText("Score: " + score, 10, 30);
+        }
+
+        function showGameOver() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#FFF";
+            ctx.font = "40px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 20);
+            ctx.font = "20px Arial";
+            ctx.fillText("Score: " + score, canvas.width / 2, canvas.height / 2 + 20);
+            ctx.fillText("Press Space to Restart", canvas.width / 2, canvas.height / 2 + 50);
+            
+            // Event listener to restart game on space bar press
+            document.addEventListener("keydown", function restartGame(event) {
+                if (event.code === "Space") {
+                    location.reload();
+                }
+            }, { once: true });
+        }
+
+        // Start the game
+        gameLoop();
+    </script>
+</body>
+</html>
