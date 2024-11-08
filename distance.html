@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Location Distance Game</title>
+    <title>City Guessing Game</title>
     <style>
         body {
             display: flex;
@@ -17,6 +17,7 @@
         }
         .game-container {
             text-align: center;
+            max-width: 400px;
         }
         input, button {
             padding: 10px;
@@ -27,22 +28,34 @@
 </head>
 <body>
     <div class="game-container">
-        <h2>Guess the Distance!</h2>
-        <p>Enter a latitude and longitude to guess how close you are to the target location.</p>
-        <input type="number" id="latitude" placeholder="Latitude" step="0.0001" required>
-        <input type="number" id="longitude" placeholder="Longitude" step="0.0001" required>
+        <h2>Guess the City Distance!</h2>
+        <p>Enter a city name to guess the distance from the target city.</p>
+        <input type="text" id="cityName" placeholder="Enter city name" required>
         <button onclick="checkDistance()">Submit Guess</button>
         <p id="result"></p>
     </div>
 
     <script>
-        // Random target location (latitude and longitude)
-        const targetLatitude = (Math.random() * 180 - 90).toFixed(4); // Random latitude between -90 and 90
-        const targetLongitude = (Math.random() * 360 - 180).toFixed(4); // Random longitude between -180 and 180
+        // Predefined city coordinates (for demonstration purposes)
+        const cities = {
+            "Toronto": { lat: 43.65107, lon: -79.347015 },
+            "Montreal": { lat: 45.5017, lon: -73.5673 },
+            "Vancouver": { lat: 49.2827, lon: -123.1207 },
+            "Calgary": { lat: 51.0447, lon: -114.0719 },
+            "Ottawa": { lat: 45.4215, lon: -75.6972 },
+            "New York": { lat: 40.7128, lon: -74.0060 },
+            "Los Angeles": { lat: 34.0522, lon: -118.2437 },
+            "Chicago": { lat: 41.8781, lon: -87.6298 }
+        };
 
-        console.log(`Target Location: Latitude ${targetLatitude}, Longitude ${targetLongitude}`); // For testing
+        // Randomly select a target city from the list
+        const cityNames = Object.keys(cities);
+        const targetCity = cityNames[Math.floor(Math.random() * cityNames.length)];
+        const targetCoordinates = cities[targetCity];
 
-        // Haversine formula to calculate distance between two points
+        console.log(`Target City: ${targetCity}`); // For testing
+
+        // Function to calculate distance using Haversine formula
         function calculateDistance(lat1, lon1, lat2, lon2) {
             const R = 6371; // Radius of Earth in kilometers
             const dLat = (lat2 - lat1) * (Math.PI / 180);
@@ -55,15 +68,28 @@
             return R * c;
         }
 
+        // Function to check distance based on guessed city
         function checkDistance() {
-            const userLatitude = parseFloat(document.getElementById("latitude").value);
-            const userLongitude = parseFloat(document.getElementById("longitude").value);
+            const guessedCity = document.getElementById("cityName").value;
+            const guessedCoordinates = cities[guessedCity];
 
-            // Calculate distance
-            const distance = calculateDistance(userLatitude, userLongitude, targetLatitude, targetLongitude);
+            if (guessedCoordinates) {
+                const distance = calculateDistance(
+                    guessedCoordinates.lat, 
+                    guessedCoordinates.lon, 
+                    targetCoordinates.lat, 
+                    targetCoordinates.lon
+                );
 
-            // Display result
-            document.getElementById("result").textContent = `Your guess is ${distance.toFixed(2)} km away from the target location.`;
+                document.getElementById("result").textContent = 
+                    `Your guess (${guessedCity}) is ${distance.toFixed(2)} km away from the target city.`;
+            } else {
+                document.getElementById("result").textContent = 
+                    `Sorry, "${guessedCity}" is not in our city list. Try another city.`;
+            }
+
+            // Clear input for the next guess
+            document.getElementById("cityName").value = "";
         }
     </script>
 </body>
