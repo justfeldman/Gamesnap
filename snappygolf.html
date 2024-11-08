@@ -34,15 +34,15 @@
         let ballX = 50;
         let ballY = 300;
         let ballRadius = 15;
-        let gravity = 0.5;
-        let lift = -10;
+        let gravity = 0.3; // Reduced gravity for a slower fall
+        let lift = -12; // Increased lift for a stronger upward push
         let velocity = 0;
         let score = 0;
         let isGameOver = false;
 
         // Obstacle Variables
         const obstacleWidth = 50;
-        const obstacleGap = 150;
+        const obstacleGap = 180; // Increased gap to make it easier
         const obstacles = [];
         let obstacleFrequency = 90;
         let frameCount = 0;
