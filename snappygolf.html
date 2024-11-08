@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Golf</title>
+    <title>Flappy Golf - GameSnap</title>
     <style>
         * {
             box-sizing: border-box;
@@ -14,12 +14,11 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #87CEEB;
             font-family: Arial, sans-serif;
         }
         canvas {
             border: 2px solid #333;
-            background-color: #87CEEB;
+            background-color: #87CEEB; /* Fallback color in case the image fails to load */
         }
     </style>
 </head>
@@ -29,6 +28,10 @@
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
+
+        // Load the background image
+        const backgroundImage = new Image();
+        backgroundImage.src = "gamesnaplogo.png"; // Path to your background image
 
         // Game Variables
         let ballX = 50;
@@ -113,8 +116,8 @@
         }
 
         function draw() {
-            // Clear Canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Draw Background Image
+            ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
             // Draw Ball
             ctx.beginPath();
@@ -157,8 +160,10 @@
             }, { once: true });
         }
 
-        // Start the game
-        gameLoop();
+        // Start the game once the background image has loaded
+        backgroundImage.onload = () => {
+            gameLoop();
+        };
     </script>
 </body>
 </html>
