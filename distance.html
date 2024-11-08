@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Guessing Game</title>
+    <title>Canadian City Guessing Game</title>
     <style>
         body {
             display: flex;
@@ -28,24 +28,47 @@
 </head>
 <body>
     <div class="game-container">
-        <h2>Guess the City Distance!</h2>
-        <p>Enter a city name to guess the distance from the target city.</p>
+        <h2>Guess the Distance to Canadian Cities!</h2>
+        <p>Enter a Canadian city name to guess the distance from the target city.</p>
         <input type="text" id="cityName" placeholder="Enter city name" required>
         <button onclick="checkDistance()">Submit Guess</button>
         <p id="result"></p>
     </div>
 
     <script>
-        // Predefined city coordinates (for demonstration purposes)
+        // Major Canadian city coordinates (for demonstration purposes)
         const cities = {
             "Toronto": { lat: 43.65107, lon: -79.347015 },
             "Montreal": { lat: 45.5017, lon: -73.5673 },
             "Vancouver": { lat: 49.2827, lon: -123.1207 },
             "Calgary": { lat: 51.0447, lon: -114.0719 },
+            "Edmonton": { lat: 53.5461, lon: -113.4938 },
             "Ottawa": { lat: 45.4215, lon: -75.6972 },
-            "New York": { lat: 40.7128, lon: -74.0060 },
-            "Los Angeles": { lat: 34.0522, lon: -118.2437 },
-            "Chicago": { lat: 41.8781, lon: -87.6298 }
+            "Winnipeg": { lat: 49.8951, lon: -97.1384 },
+            "Quebec City": { lat: 46.8139, lon: -71.2082 },
+            "Hamilton": { lat: 43.2557, lon: -79.8711 },
+            "Kitchener": { lat: 43.4516, lon: -80.4925 },
+            "Halifax": { lat: 44.6488, lon: -63.5752 },
+            "Victoria": { lat: 48.4284, lon: -123.3656 },
+            "Saskatoon": { lat: 52.1579, lon: -106.6702 },
+            "Regina": { lat: 50.4452, lon: -104.6189 },
+            "St. John's": { lat: 47.5615, lon: -52.7126 },
+            "Sudbury": { lat: 46.4900, lon: -81.0100 },
+            "Kelowna": { lat: 49.8880, lon: -119.4960 },
+            "Kingston": { lat: 44.2312, lon: -76.4860 },
+            "Whitehorse": { lat: 60.7212, lon: -135.0568 },
+            "Yellowknife": { lat: 62.4540, lon: -114.3718 },
+            "Iqaluit": { lat: 63.7467, lon: -68.5168 },
+            "Charlottetown": { lat: 46.2382, lon: -63.1311 },
+            "Fredericton": { lat: 45.9636, lon: -66.6431 },
+            "Moncton": { lat: 46.0878, lon: -64.7782 },
+            "Thunder Bay": { lat: 48.3809, lon: -89.2477 },
+            "Lethbridge": { lat: 49.6935, lon: -112.8418 },
+            "Abbotsford": { lat: 49.0504, lon: -122.3045 },
+            "St. Catharines": { lat: 43.1594, lon: -79.2469 },
+            "Guelph": { lat: 43.5448, lon: -80.2482 },
+            "Barrie": { lat: 44.3894, lon: -79.6903 },
+            "Sherbrooke": { lat: 45.4042, lon: -71.8929 }
         };
 
         // Randomly select a target city from the list
